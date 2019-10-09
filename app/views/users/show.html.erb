@@ -1,0 +1,71 @@
+<div class="container">
+  <% if flash[:error1] %>
+      <p><%= flash[:error1] %></p>
+  <% end %>
+  <% if flash[:success_update] %>
+      <p><%= flash[:success_update] %></p>
+  <% end %>
+  <div class="row">
+    
+    <div class="col-sm-3">
+
+    	<h2>User info</h2>
+
+    	<%= attachment_image_tag @user, :profile_image, :fill, 60, 60, format: 'jpeg', fallback: "no_image.jpg" %>
+
+    	<table class="table">
+		    <thead>
+		        <tr>
+		            <th>name</th>
+		            <th><%= @user.name %></th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr>
+		            <th>introduction</th>
+		            <td><%= @user.introduction %></td>
+		        </tr>
+		    </tbody>
+		  </table>
+		  <% if @user.id == current_user.id %>
+        <p><%= link_to "", edit_user_path(@user),class: "btn btn-default  btn-block glyphicon glyphicon-wrench" %></p>
+      <% end %>
+
+      <h3>New book</h3>
+      <%= form_for(@book) do |f| %>
+        <p>Title</p>
+        <%= f.text_field :title %>
+        <p>Opinion</p>
+        <%= f.text_area :body %>
+        <div><%= f.submit 'Create Book', :class=>"btn btn-primary  btn-block" %></div>
+      <% end %>
+    </div>
+    <div class="col-sm-9">
+    	<h2>Books</h2>
+      <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Opinion </th>
+            </tr>
+        </thead>
+        <tbody>
+          <!-- @bookにBookモデルをまとめて入れて、
+                each文で繰り返し同じ表示方法で並べてしまう
+                ちなみにbookはブロック変数で、
+                たくさん届いたBookモデルの置き方を設定する用途に使う -->
+<!--            @user.booksはブックに紐ずいたユーザーの投稿のみをしてする     
+ -->      <% @user.books.each do |book| %>
+            <tr>
+                <th><%= attachment_image_tag @user, :profile_image, :fill, 20, 20, format: 'jpeg', fallback: "no_image.jpg" %></th>
+<!--                bookのID指定された詳細ページに飛ぶ
+ -->                <th><%= link_to book.title, book_path(book.id) %></th>
+                <th><%= book.body %></th>
+            </tr>
+          <% end %>  
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

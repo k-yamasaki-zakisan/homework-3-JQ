@@ -1,0 +1,17 @@
+<nav class="navbar">
+  <div class="container">
+    <h1>welcome to <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Bookers      !!</h1>
+    <p>you can share and exchange your opinions , inpressions , and emotions<br>
+       about varioius books!</p>
+    <div class="box">
+      <ul class="list-unstyled">
+	      <li>
+	        <%= link_to 'Log in', new_user_session_path, class: "btn btn-primary  btn-block" %>
+	      </li>
+	      <li>
+	       <%= link_to 'Sign up', new_user_session_path, class: "btn btn-success btn-block" %>
+	      </li>
+      </ul>
+    </div>
+  </div>
+</nav>

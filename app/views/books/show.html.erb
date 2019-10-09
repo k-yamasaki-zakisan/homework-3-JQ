@@ -1,0 +1,76 @@
+<div class="container">
+	<% if flash[:success] %>
+      <p><%= flash[:success] %></p>
+  <% end %>
+  <div class="row">
+    <div class="col-sm-3">
+    	<h2>User info</h2>
+      <%= attachment_image_tag @thebook.user, :profile_image, :fill, 60, 60, format: 'jpeg', fallback: "no_image.jpg" %>
+      <table class="table">
+		    <thead>
+		      <tr>
+		        <th>name</th>
+		        <th><%= @thebook.user.name %></th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr>
+	          <th>introduction</th>
+	          <td><%= @thebook.user.introduction %></td>
+          </tr>
+		    </tbody>
+		  </table>
+		    <% if @thebook.user.id == current_user.id %>
+          <p><%= link_to "", edit_user_path(@thebook.user),class: "btn btn-default  btn-block glyphicon glyphicon-wrench" %></p>
+        <%else %>
+          <p><%= link_to "", user_path(current_user.id),class: "btn btn-default  btn-block glyphicon glyphicon-wrench" %></p>
+        <% end %>
+
+        <h3>New book</h3>
+        <%= form_for(@book) do |f| %>
+          <p>Title</p>
+          <%= f.text_field :title %>
+          <p>Opinion</p>
+          <%= f.text_area :body %>
+          <div>
+            <%= f.submit 'Create Book', :class=>"btn btn-primary  btn-block" %>
+          </div>
+        <% end %>
+    </div>
+    <div class="col-sm-9">
+      <table class="table">
+        <thead>
+            <tr>
+                <th><h3>Book detail</h3></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+          <!-- @bookにBookモデルをまとめて入れて、
+                each文で繰り返し同じ表示方法で並べてしまう
+                ちなみにbookはブロック変数で、
+                たくさん届いたBookモデルの置き方を設定する用途に使う -->
+<!--            @user.booksはブックに紐ずいたユーザーの投稿のみをしてする     
+ -->          
+            <tr>
+                <th>
+                  <%= link_to user_path(@thebook.user.id) do %>
+                    <%= attachment_image_tag @thebook.user, :profile_image, :fill, 40, 40, format: 'jpeg', fallback: "no_image.jpg" %>
+                	  <p><%=link_to @thebook.user.name, user_path(@thebook.user) %></p>
+                  <% end %>
+                </th>
+<!--                bookのID指定された詳細ページに飛ぶ
+ -->            <th><%= link_to @thebook.title, book_path(@thebook) %></th>
+                <th><%= @thebook.body %></th>
+                <% if @thebook.user.id == current_user.id %>
+                  <th><%= link_to "Edit", edit_book_path(@thebook), :style=>"color: green;" %></th>
+                  <th><%= link_to "Destroy", book_path(@thebook), method: :delete, data: {confirm: '削除しますか？'}, :style=>"color: red;" %></th>
+                <% end %>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
